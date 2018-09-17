@@ -1,0 +1,21 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subnetName": {
+      "value": "Backend-SN"
+    },
+    "dnsNameForPublicIP": {
+      "value": "aw-sql-ps"
+    },
+    "publicIPAddressName": {
+      "value": "SQL01-IP"
+    },
+    "privateIPAddress": {
+      "value": "192.168.1.36"
+    },
+    "nicName": {
+      "value": "SQL01-NIC"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NetworkConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration">
+  <VirtualNetworkConfiguration>
+    <Dns />
+    <VirtualNetworkSites>
+      <VirtualNetworkSite name="Group w-asm-rg w-asm-vnet" Location="Japan West">
+        <Gateway  profile="Small">
+          <VPNClientAddressPool>
+            <AddressPrefix>172.16.0.0/24</AddressPrefix>
+          </VPNClientAddressPool>
+        </Gateway>
+        <AddressSpace>
+          <AddressPrefix>192.168.0.0/24</AddressPrefix>
+        </AddressSpace>
+        <Subnets>
+          <Subnet name="WebSubnet">
+            <AddressPrefix>192.168.2.0/25</AddressPrefix>
+          </Subnet>
+          <Subnet name="WorkerSubnet">
+            <AddressPrefix>192.168.2.128/26</AddressPrefix>
+          </Subnet>
+          <Subnet name="GatewaySubnet">
+            <AddressPrefix>192.168.2.196/28</AddressPrefix>
+          </Subnet>
+        </Subnets>
+      </VirtualNetworkSite>
+    </VirtualNetworkSites>
+  </VirtualNetworkConfiguration>
+</NetworkConfiguration>

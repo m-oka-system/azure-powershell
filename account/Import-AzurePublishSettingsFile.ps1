@@ -1,0 +1,2 @@
+Get-AzurePublishSettingsFile
+Import-AzurePublishSettingsFile <publishsettingsFile Path>

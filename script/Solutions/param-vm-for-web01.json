@@ -1,0 +1,30 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "nicName": {
+      "value": "Web01-NIC"
+    },
+    "vmName": {
+      "value": "Web01"
+    },
+    "vmSize": {
+      "value": "Standard_A1"
+    },
+    "publisher": {
+      "value": "MicrosoftWindowsServer"
+    },
+    "offer": {
+      "value": "WindowsServer"
+    },
+    "sku": {
+      "value": "2012-R2-Datacenter"
+    },
+    "OSDiskName": {
+      "value": "Web01"
+    }
+  }
+}
+
+
+

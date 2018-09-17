@@ -1,0 +1,22 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subnetName": {
+      "value": "Frontend-SN"
+    },
+    "dnsNameForPublicIP": {
+      "value": "aw-web-ps"
+    },
+    "publicIPAddressName": {
+      "value": "Web01-IP"
+    },
+    "privateIPAddress": {
+      "value": "192.168.1.4"
+    },
+    "nicName": {
+      "value": "Web01-NIC"
+    }
+  }
+}
+

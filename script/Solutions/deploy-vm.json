@@ -1,0 +1,104 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "nicName": {
+      "type": "string",
+      "metadata": {
+        "description": "NIC Name"
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "VM Name"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "VM Size"
+      }
+    },
+    "publisher": {
+      "type": "string",
+      "metadata": {
+        "description": "Publisher for the VM Image"
+      }
+    },
+    "offer": {
+      "type": "string",
+      "metadata": {
+        "description": "Offer for the VM Image"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "metadata": {
+        "description": "SKU for the VM Image"
+      }
+    },
+    "OSDiskName": {
+      "type": "string",
+      "metadata": {
+        "description": "OS Disk Name"
+      }
+    }
+  },
+  "variables": {
+    "location": "japanwest",
+    "storageAccountName": "awvmstorageacct",
+    "storageContainerName": "vhds",
+    "adminUsername": "awadmin",
+    "adminPassword" : "awPa$$w0rd",
+    "storageUri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net')]",
+    "vhdUri": "[concat('/',variables('storageContainerName'),'/',parameters('OSDiskName'),'.vhd')]"
+  },
+    "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('vmName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmName')]",
+          "adminUsername": "[variables('adminUsername')]",
+          "adminPassword": "[variables('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('publisher')]",
+            "offer": "[parameters('offer')]",
+            "sku": "[parameters('sku')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat(variables('storageUri') ,variables('vhdUri'))]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nicName'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "true",
+            "storageUri": "[variables('storageUri')]"
+          }
+        }
+      }
+    }
+  ]
+}

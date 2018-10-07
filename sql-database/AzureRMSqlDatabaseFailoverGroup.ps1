@@ -1,4 +1,4 @@
-﻿## Valiables
+﻿## Variables
 # ResourceGroup
 $resourceGroupName = "w-arm-rg"
 $partnerResourceGroupName = "e-arm-rg"
@@ -9,19 +9,19 @@ $partnerLocation = "Japan East"
 $sqlServerName = "w-arm-sql"
 $partnerSqlServerName = "e-arm-sql"
 $sqlLogin = "sqladmin"
-$sqlPassword = "!PassWord#7" | ConvertTo-SecureString -AsPlainText -Force
+$sqlPassword = "yourpassword"
 $cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $sqlLogin, $(ConvertTo-SecureString -String $sqlPassword -AsPlainText -Force)
 $firewallRuleName = "AllowSome"
 $startip = "0.0.0.0"
 $endip = "0.0.0.0"
 
 # SQLDatabase
-$databaseName = "mySampleDatabase"
+$databaseName = "MyDatabase"
 $sqlEdition = "Basic"
 $sqlSize = 2gb
 
 # failover group
-$failoverGroupName ="arm-fg"
+$failoverGroupName ="arm-fo"
 
 # Create resource group
 New-AzureRmResourceGroup -Name $resourceGroupName -Location $location -Verbose -Force
@@ -54,7 +54,7 @@ New-AzureRmSqlDatabase  -ResourceGroupName $resourceGroupName `
     -MaxSizeBytes $sqlSize -Verbose
 
 # Create failover group
-New-AzureRMSqlDatabaseFailoverGroup -ResourceGroupName $resourceGroupName `
+New-AzureRmSqlDatabaseFailoverGroup -ResourceGroupName $resourceGroupName `
     -ServerName $sqlServerName `
     -PartnerResourceGroupName $partnerResourceGroupName `
     -PartnerServerName $partnerSqlServerName `

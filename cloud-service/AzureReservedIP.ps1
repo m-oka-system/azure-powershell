@@ -3,7 +3,7 @@
 # Default-Networking 以外のリソース グループに予約済み IP を作成した場合、Get-AzureReservedIP や Remove-AzureReservedIP などのコマンドでその予約済み IP を参照するときに、
 # Group resource-group-name reserved-ip-name という名前を参照する必要があります。
 
-# Valiables
+# Variables
 $location = "Japan West"
 $ipName = "w-arm-ip"
 $serviceName = "w-arm-cs"

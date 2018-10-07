@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $resourceGroupName1 = "w-arm-rg"
 $resourceGroupName2 = "e-arm-rg"
 $location1 = "Japan West"

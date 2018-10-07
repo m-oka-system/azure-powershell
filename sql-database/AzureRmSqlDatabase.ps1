@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 
 # ResourceGroup
 $resourceGroupName = "w-arm-rg"
@@ -7,14 +7,14 @@ $location = "Japan West"
 # SQLServer
 $sqlServerName = "w-arm-sql"
 $sqlLogin = "sqladmin"
-$sqlPassword = "!PassWord#7" | ConvertTo-SecureString -AsPlainText -Force
+$sqlPassword = "yourpassword"
 $cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $sqlLogin, $(ConvertTo-SecureString -String $sqlPassword -AsPlainText -Force)
 $firewallRuleName = "AllowSome"
 $startip = "0.0.0.0"
 $endip = "0.0.0.0"
 
 # SQLDatabase
-$databaseName = "mySampleDatabase"
+$databaseName = "MyDatabase"
 $sqlEdition = "Basic"
 $sqlSize = 2gb
 

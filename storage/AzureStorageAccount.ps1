@@ -1,5 +1,5 @@
 ﻿# Variables
-$storageAccountName = "warmstorageaccount"
+$storageAccountName = "wasmgrs"
 $location = "Japan West"
 $type = "Standard_LRS"
 
@@ -18,6 +18,10 @@ New-AzureStorageAccount `
 
 # Show
 Get-AzureStorageAccount -StorageAccountName $storageAccountName
+
+# Change the replication type
+Set-AzureStorageAccount -StorageAccountName $storageAccountName -Type Standard_GRS
+Set-AzureStorageAccount -StorageAccountName $storageAccountName -Type Standard_LRS
 
 # Delete
 Remove-AzureStorageAccount -StorageAccountName $storageAccountName

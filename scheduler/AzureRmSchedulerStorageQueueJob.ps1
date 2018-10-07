@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $resourceGroupName = "w-arm-rg"
 $jobCollectionName = "w-arm-scheduler-1"
 $jobName ="Scheduler01"

@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $resourceGroupName = "w-arm-rg"
 $vmName = "w-arm-vm-1"
 $storageAccountName = "warmstorageaccount"

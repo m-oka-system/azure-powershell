@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $serviceName = "w-arm-cs"
 $vmName = "w-arm-vm01"
 

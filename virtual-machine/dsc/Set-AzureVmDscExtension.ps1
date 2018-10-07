@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $storageAccountName = "warmstorageaccount"
 $storageAccountKey = Get-AzureStorageKey -StorageAccountName $storageAccountName
 $ctx = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey.Primary

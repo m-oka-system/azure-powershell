@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $location = "Japan West"
 $serviceName = "w-arm-cs"
 

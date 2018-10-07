@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $csName = "w-arm-cs"
 $location = "Japan west"
 

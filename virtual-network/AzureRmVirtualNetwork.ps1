@@ -1,10 +1,8 @@
-﻿# ResourceGroup
+﻿# Variables
 $resourceGroupName = "w-arm-rg"
 $location = "Japan West"
-# VirtualNetwork
 $vnetName = "w-arm-vnet"
 $vnetPrefix = "192.168.0.0/24"
-# Subnet
 $subnetName = "subnet1"
 $subnetPrefix = "192.168.0.192/27"
 

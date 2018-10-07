@@ -4,7 +4,7 @@ Get-AzureVNetConfig -ExportToFile "C:\azure\vnet.xml"
 # Update virtual network based on network configuration file
 Set-AzureVNetConfig -ConfigurationPath "C:\azure\vnet.xml"
 
-# Valiables
+# Variables
 $resourceGroupName = "w-arm-rg"
 $vnetName = "w-arm-vnet"
 $vnetName = "Group " + "${resourceGroupName} " + $vnetName

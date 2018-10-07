@@ -1,4 +1,4 @@
-﻿# Valiables
+﻿# Variables
 $resourceGroupName = "w-arm-rg"
 $location = "Japan West"
 $appServicePlanName = "w-arm-pln"

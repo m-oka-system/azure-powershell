@@ -5,7 +5,7 @@ $jobCollectionName = "w-arm-scheduler-1"
 
 # Create scheduler job collection
 New-AzureRmSchedulerJobCollection -ResourceGroupName $resourceGroupName -Location $location `
-    -JobCollectionName $schedulerName `
+    -JobCollectionName $jobCollectionName `
     -Plan Free
 
 # Show

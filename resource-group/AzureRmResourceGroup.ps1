@@ -1,5 +1,5 @@
 ﻿# Variables
-$resourceGroupName = "w-arm-rg"
+$resourceGroupName = "e-arm-rg"
 $location = "Japan West"
 
 # Create resource group

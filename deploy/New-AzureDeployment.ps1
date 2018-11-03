@@ -6,17 +6,18 @@ $StorageAccountKey = Get-AzureStorageKey -StorageAccountName $StorageAccountName
 $Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey.Primary
 $containerName = "deploy"
 $serviceName = "w-arm-cs"
+$labelName = "2018102701"
 
 # Create blob container
 New-AzureStorageContainer -Context $Ctx -Container $containerName
 
 # Upload pakcage file and config file to blob container
-$cspkg = Set-AzureStorageBlobContent -Context $Ctx -Container $containerName -File $cspkgFile
-$cscfg = Set-AzureStorageBlobContent -Context $Ctx -Container $containerName -File $cscfgFile
+$cspkg = Set-AzureStorageBlobContent -Context $Ctx -Container $containerName -File $cspkgFile -Force
+$cscfg = Set-AzureStorageBlobContent -Context $Ctx -Container $containerName -File $cscfgFile -Force
 
 # Create new deployment
 $pakcageUri = $cspkg.ICloudBlob.Uri.AbsoluteUri
-New-AzureDeployment -ServiceName $serviceName -Slot Staging -Package $pakcageUri -Configuration $cscfgFile -Verbose
+New-AzureDeployment -ServiceName $serviceName -Slot Staging -Package $pakcageUri -Configuration $cscfgFile -Label $labelName -Verbose
 
 # Download blob to local disk
 # Get-AzureStorageBlobContent -Blob $cscfgFile -Container $containerName -Destination ".\" -Context $ctx

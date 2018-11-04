@@ -1,10 +1,10 @@
 ﻿# Install AzureRmStorageTable module
 Install-Module AzureRmStorageTable
 
-$storageAccountName = "yourstorageaccount"
+$storageAccountName = "warmstorageaccount"
 $storageAccountKey = Get-AzureStorageKey -storageAccountName $storageAccountName
 $ctx = New-AzureStorageContext -storageAccountName $storageAccountName -storageAccountKey $storageAccountKey.Primary
-$tableName = "`$MetricsHourPrimaryTransactionsBlob"
+$tableName = "WADLogsTable"
 $storageTable = Get-AzureStorageTable –Name $tableName –Context $ctx
 $datetime = Get-Date -Format "yyyyMMddHHmmss"
 $dirName = "C:\azure\"
@@ -15,20 +15,27 @@ $filePath = $dirName + $fileName
 Get-AzureStorageTable –Context $ctx | select Name
 
 # Show all records
-Get-AzureStorageTableRowAll -table $storageTable | ft | Out-File C:\azure\table.csv
+Get-AzureStorageTableRowAll -table $storageTable | ft | Out-File $filePath
 
 
 # Using custom filters
 Get-AzureStorageTableRowByCustomFilter -table $storageTable `
-    -customFilter "(TableTimestamp eq (Get-Date))" | ft
+    -customFilter "(Level eq '4')" | ft
 
 # Specific values of a particular column
 Get-AzureStorageTableRowByColumnName -table $storageTable `
-    -columnName "TableTimestamp" `
-    -value "2018/11/04 10:30:18 +09:00" `
+    -columnName "Level" `
+    -value "4" `
     -operator Equal
 
 # Export csv
+[DateTime]$localStartTime = "2018/11/04 13:00:00"
+[DateTime]$localEndTime = "2018/11/04 14:00:00"
+[DateTime]$searchStartTime = $localStartTime.ToUniversalTime() #convert time to utc
+[DateTime]$searchEndTime = $localEndTime.ToUniversalTime()     #convert time to utc
+
 Get-AzureStorageTableRowAll -table $storageTable |
-    Select-Object TalbeTImeStamp, Avairability,AnonymousAuthorizationError |
-    Export-Csv -path $filePath -Encoding Default -NoTypeInformation -Delimiter `t
+    Where-Object {($_.Level -eq 4) -and ($_.Timestamp -gt $searchStartTime) -and ($_.Timestamp -lt $searchEndTime)} |
+    Select-Object Timestamp, Role, RoleInstance, Level,Message |
+    Export-Csv -path $filePath -Encoding Default -NoTypeInformation
+    #-Delimiter `t

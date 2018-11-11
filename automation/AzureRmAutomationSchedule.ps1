@@ -11,7 +11,7 @@ $timeZone = "Asia/Tokyo"
 # Create resource group
 New-AzureRmResourceGroup -Name $resourceGroupName -Location $location -Verbose -Force
 
-# Create runbook
+# Create schedule
 New-AzureRmAutomationSchedule -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $scheduleName `
     -StartTime $startTime `
     -WeekInterval 1 `
@@ -31,7 +31,6 @@ Unregister-AzureRmAutomationScheduledRunbook -ResourceGroupName $resourceGroupNa
 # Show
 Get-AzureRmAutomationSchedule  -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $scheduleName
 Get-AzureRmAutomationScheduledRunbook -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $runbookName
-
 
 # Delete
 Remove-AzureRmAutomationSchedule  -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $scheduleName -Force -Verbose

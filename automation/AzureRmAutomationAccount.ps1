@@ -7,7 +7,7 @@ $automationAccountName = "automation-ps-aa"
 New-AzureRmResourceGroup -Name $resourceGroupName -Location $location -Verbose -Force
 
 # Create automation account
-New-AzureRmAutomationAccount -ResourceGroupName $resourceGroupName -Location $location -Name $automationAccountName
+New-AzureRmAutomationAccount -ResourceGroupName $resourceGroupName -Location $location -Name $automationAccountName -Verbose
 
 # Show
 Get-AzureRmAutomationAccount -ResourceGroupName $resourceGroupName

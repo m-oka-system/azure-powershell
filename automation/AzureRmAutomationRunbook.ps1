@@ -13,7 +13,7 @@ New-AzureRmAutomationRunbook -ResourceGroupName $resourceGroupName -AutomationAc
 
 # Import
 Import-AzureRmAutomationRunbook -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $runbookName -Type PowerShell `
-    -Path $runbookPath -Force
+    -Path $runbookPath -Force -Verbose
 
 # Show
 Get-AzureRmAutomationRunbook  -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $runbookName
@@ -25,4 +25,4 @@ Remove-AzureRmAutomationRunbook  -ResourceGroupName $resourceGroupName -Automati
 Publish-AzureRmAutomationRunbook -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $runbookName
 
 # Start runbook
-Start-AzureRmAutomationRunbook -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $runbookName -Verbose
+Start-AzureRmAutomationRunbook -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $runbookName

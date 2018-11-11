@@ -10,7 +10,7 @@ $cred = New-Object -TypeName System.Management.Automation.PSCredential -Argument
 # Create resource group
 New-AzureRmResourceGroup -Name $resourceGroupName -Location $location -Verbose -Force
 
-# Create variables
+# Create credential
 New-AzureRmAutomationCredential -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName -Name $credName -Value $cred
 
 # Show

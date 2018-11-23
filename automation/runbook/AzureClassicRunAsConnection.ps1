@@ -1,20 +1,19 @@
-﻿# Parameter
-Param( 
-	 	
-	[Parameter (Mandatory = $true)] 
-	[string]$CloudServiceName,
-	
-	[Parameter (Mandatory = $true)] 
-	[ValidateSet("staging","production")]
-	[string]$CloudServiceSlot
-)
+<#
+    .DESCRIPTION
+        An example runbook which gets all the Classic VMs in a subscription using the Classic Run As Account (certificate)
+		and then outputs the VM name and status
 
-$ErrorActionPreference = 'Stop'
+    .NOTES
+        AUTHOR: Azure Automation Team
+        LASTEDIT: 2016-6-1
+#>
 
-# Login
 $ConnectionAssetName = "AzureClassicRunAsConnection"
+
+# Get the connection
 $connection = Get-AutomationConnection -Name $connectionAssetName        
 
+# Authenticate to Azure with certificate
 Write-Verbose "Get connection asset: $ConnectionAssetName" -Verbose
 $Conn = Get-AutomationConnection -Name $ConnectionAssetName
 if ($Conn -eq $null)
@@ -34,20 +33,9 @@ Write-Verbose "Authenticating to Azure with certificate." -Verbose
 Set-AzureSubscription -SubscriptionName $Conn.SubscriptionName -SubscriptionId $Conn.SubscriptionID -Certificate $AzureCert 
 Select-AzureSubscription -SubscriptionId $Conn.SubscriptionID
 
-# Remove deployment
-Write-Verbose "Searching deployments from slot '$CloudServiceSlot' in '$CloudServiceName'" -Verbose
-$deployments = Get-AzureDeployment -ServiceName $CloudServiceName -slot $CloudServiceSlot -ErrorAction "SilentlyContinue"
-
-if ($deployments) {
-	Write-Output "Stopping Cloud Service '$CloudServiceName' in slot '$CloudServiceSlot'"
-	Stop-AzureService $CloudServiceName -Slot $CloudServiceSlot
-	
-	Write-Output "Removing Cloud Service deployment '$CloudServiceName' in slot '$CloudServiceSlot'"
-	Remove-AzureDeployment $CloudServiceName -Slot $CloudServiceSlot -Force | Out-Null
-} 
-else 
+# Get all VMs in the subscription and write out VM name and status
+$VMs = Get-AzureVm  | Select Name, Status
+ForEach ($VM in $VMs)
 {
-	Write-Warning "No deployment found from '$CloudServiceName' in slot '$CloudServiceSlot' that we could remove"
+    Write-Output ("Classic VM " + $VM.Name + " has status " +  $VM.Status)
 }
-
-Write-Verbose "All done!" -Verbose

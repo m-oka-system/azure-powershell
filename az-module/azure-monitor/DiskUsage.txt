@@ -1,0 +1,8 @@
+Perf
+| where Computer == "ContosoSQLSrv1"
+| where ObjectName == "LogicalDisk" 
+| where CounterName == "% Free Space"
+| where InstanceName matches regex "[C-Z]:" 
+| extend UsedSpace = 100 - CounterValue
+| summarize MaxValue = max(UsedSpace), MaxTimeGenerated = max(TimeGenerated) by Computer, InstanceName
+| where MaxValue > 20

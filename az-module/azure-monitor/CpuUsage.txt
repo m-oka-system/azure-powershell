@@ -1,0 +1,7 @@
+Perf
+| where Computer contains "ContosoSQL"
+| where ObjectName == "Processor" 
+| where CounterName == "% Processor Time" 
+| where InstanceName == "_Total" 
+| summarize AggregatedValue = avg(CounterValue) by Computer, bin(TimeGenerated, 5m) 
+| sort by TimeGenerated asc

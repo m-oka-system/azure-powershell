@@ -1,0 +1,7 @@
+Perf
+| where Computer == "ContosoSQLSrv1"
+| where ObjectName == "Memory" 
+| where CounterName == "Available MBytes" 
+| extend UsedMemory = 100 - (CounterValue / 4000 * 100)
+| summarize AggregatedValue = avg(UsedMemory) by Computer, bin(TimeGenerated, 5m) 
+| sort by TimeGenerated asc

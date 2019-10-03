@@ -1,0 +1,3 @@
+Heartbeat 
+| summarize LastCall = max(TimeGenerated) by Computer 
+| where LastCall < ago(5m)

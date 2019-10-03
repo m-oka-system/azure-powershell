@@ -1,0 +1,18 @@
+// サンプル クエリ
+Perf
+| where Computer == "ContosoSQLSrv1"
+| where ObjectName == "LogicalDisk" 
+| where CounterName == "% Free Space"
+| where InstanceName matches regex "[C-Z]:" 
+| extend UsedSpace = 100 - CounterValue // ディスク使用率
+| where TimeGenerated in ((
+    Perf
+    | where Computer == "ContosoSQLSrv1"
+    | where ObjectName == "LogicalDisk" 
+    | where CounterName == "% Free Space"
+    | where InstanceName matches regex "[C-Z]:" 
+    | summarize max(TimeGenerated) by InstanceName
+    | distinct max_TimeGenerated 
+))
+| summarize MaxValue = max(UsedSpace) by Computer, InstanceName
+| where MaxValue > 20

@@ -1,11 +1,11 @@
 ﻿# Variables
 
 # ResourceGroup
-$rgName = "w-paas-rg"
-$location = "Japan West"
+$rgName = "paas-rg"
+$location = "Japan East"
 
 # SQLServer
-$sqlServerName = "w-paas-sql"
+$sqlServerName = "e-paas-sql"
 $sqlLogin = "sqladmin"
 $sqlPassword = "1000%kitting"
 $cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $sqlLogin, $(ConvertTo-SecureString -String $sqlPassword -AsPlainText -Force)
@@ -48,3 +48,6 @@ Get-AzSqlDatabase -ResourceGroupName $rgName -ServerName $sqlServerName
 Remove-AzSqlDatabase -ResourceGroupName $rgName -ServerName $sqlServerName -DatabaseName $databaseName
 Remove-AzSqlServerFirewallRule $rgName -ServerName $sqlServerName -FirewallRuleName $firewallRuleName
 Remove-AzSqlServer -ResourceGroupName $rgName -ServerName $sqlServerName
+
+# Delete resource gorup
+Remove-AzResourceGroup -Name $rgName -Force

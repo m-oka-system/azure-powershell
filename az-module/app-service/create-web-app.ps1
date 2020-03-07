@@ -1,8 +1,8 @@
 ﻿# Variables
-$rgName = "w-paas-rg"
-$location = "Japan West"
-$appServicePlanName = "w-paas-pln"
-$webAppName = "w-paas-app"
+$rgName = "paas-rg"
+$location = "Japan East"
+$appServicePlanName = "e-paas-pln"
+$webAppName = "e-paas-app"
 
 # Create resource group
 New-AzResourceGroup -Name $rgName -Location $location -Verbose -Force
@@ -33,3 +33,6 @@ Remove-AzWebApp -ResourceGroupName $rgName `
 Remove-AzAppServicePlan -ResourceGroupName $rgName `
     -Name $appServicePlanName `
     -Force
+
+# Delete resource gorup
+Remove-AzResourceGroup -Name $rgName -Force

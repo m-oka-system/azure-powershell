@@ -1,3 +1,4 @@
 *.cspkg
 *.cscfg
+*.pfx
 .vscode/

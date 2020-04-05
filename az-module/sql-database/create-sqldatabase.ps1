@@ -12,7 +12,7 @@ $cred = New-Object -TypeName System.Management.Automation.PSCredential -Argument
 $firewallRuleName = "AllowSome"
 $startip = "0.0.0.0"
 $endip = "0.0.0.0"
-$myip = "217.178.97.227"
+$myip = "input your ip address"
 
 # SQLDatabase
 $databaseName = "MyDatabase"

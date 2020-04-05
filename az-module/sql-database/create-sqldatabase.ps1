@@ -7,16 +7,17 @@ $location = "Japan East"
 # SQLServer
 $sqlServerName = "e-paas-sql"
 $sqlLogin = "sqladmin"
-$sqlPassword = "Input your password"
+$sqlPassword = "P@ssword"
 $cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $sqlLogin, $(ConvertTo-SecureString -String $sqlPassword -AsPlainText -Force)
 $firewallRuleName = "AllowSome"
 $startip = "0.0.0.0"
 $endip = "0.0.0.0"
+$myip = "217.178.97.227"
 
 # SQLDatabase
 $databaseName = "MyDatabase"
-$sqlEdition = "S0"
-$sqlSize = 250gb
+$sqlEdition = "Basic" #"S0"
+$sqlSize = 2gb
 
 # Create resource group
 New-AzResourceGroup -Name $rgName -Location $location -Verbose -Force
@@ -26,10 +27,15 @@ New-AzSqlServer -ResourceGroupName $rgName -Location $location `
     -ServerName $sqlServerName `
     -SqlAdministratorCredentials $cred
 
-# Create firewall rule
+# Create firewall rule to allow connections from Azure services
 New-AzSqlServerFirewallRule -ResourceGroupName $rgName `
     -ServerName $sqlServerName `
     -FirewallRuleName $firewallRuleName -StartIpAddress $startip -EndIpAddress $endip
+
+# Create firewall rule to allow connections from client IP address
+New-AzSqlServerFirewallRule -ResourceGroupName $rgName `
+    -ServerName $sqlServerName `
+    -FirewallRuleName "ClientIPAddress" -StartIpAddress $myip -EndIpAddress $myip
 
 # Create sql database
 New-AzSqlDatabase  -ResourceGroupName $rgName `

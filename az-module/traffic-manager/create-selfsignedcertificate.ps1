@@ -1,8 +1,5 @@
 # https://qiita.com/Cotoletta/items/40638d0834470f40d187
 
-# 「個人」の証明書を削除
-Remove-Item -Path ($cert.PSPath)
-
 # 保護するドメイン名を指定
 $domain = "your domain name"
 
@@ -23,3 +20,6 @@ $pfxfile  = "c:\$($domain).pfx"
 $password = "password"
 $sspwd = ConvertTo-SecureString -String $password -Force -AsPlainText 
 Export-PfxCertificate -Cert $cert -FilePath $pfxfile -Password $sspwd
+
+# 「個人」の証明書を削除
+Remove-Item -Path ($cert.PSPath)

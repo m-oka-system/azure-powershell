@@ -9,7 +9,7 @@ $secondaryLocation = "Japan West"
 $sqlServerName = "e-paas-sql"
 $secondarySqlServerName = "w-paas-sql"
 $sqlLogin = "sqladmin"
-$sqlPassword = "input your password"
+$sqlPassword = "My5up3rStr0ngPaSw0rd!"
 $cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $sqlLogin, $(ConvertTo-SecureString -String $sqlPassword -AsPlainText -Force)
 $firewallRuleName = "AllowSome"
 $startip = "0.0.0.0"
@@ -31,31 +31,31 @@ New-AzResourceGroup -Name $rgName -Location $location -Verbose -Force
 # Primary
 New-AzSqlServer -ResourceGroupName $rgName -Location $location `
     -ServerName $sqlServerName `
-    -SqlAdministratorCredentials $cred
+    -SqlAdministratorCredentials $cred -Verbose
 # Secondary
 New-AzSqlServer -ResourceGroupName $rgName -Location $secondaryLocation `
     -ServerName $secondarySqlServerName `
-    -SqlAdministratorCredentials $cred
+    -SqlAdministratorCredentials $cred -Verbose
 
 # Create firewall rule to allow connections from Azure services and client IP address
 # Primary
 New-AzSqlServerFirewallRule -ResourceGroupName $rgName `
     -ServerName $sqlServerName `
-    -FirewallRuleName $firewallRuleName -StartIpAddress $startip -EndIpAddress $endip
+    -FirewallRuleName $firewallRuleName -StartIpAddress $startip -EndIpAddress $endip -Verbose
 
 New-AzSqlServerFirewallRule -ResourceGroupName $rgName `
     -ServerName $sqlServerName `
-    -FirewallRuleName "ClientIPAddress" -StartIpAddress $myip -EndIpAddress $myip
+    -FirewallRuleName "ClientIPAddress" -StartIpAddress $myip -EndIpAddress $myip -Verbose
 
 # Secondary
 New-AzSqlServerFirewallRule -ResourceGroupName $rgName `
     -ServerName $secondarySqlServerName `
-    -FirewallRuleName $firewallRuleName -StartIpAddress $startip -EndIpAddress $endip
+    -FirewallRuleName $firewallRuleName -StartIpAddress $startip -EndIpAddress $endip -Verbose
 
 # Create firewall rule to allow connections from client IP address
 New-AzSqlServerFirewallRule -ResourceGroupName $rgName `
     -ServerName $secondarySqlServerName `
-    -FirewallRuleName "ClientIPAddress" -StartIpAddress $myip -EndIpAddress $myip
+    -FirewallRuleName "ClientIPAddress" -StartIpAddress $myip -EndIpAddress $myip -Verbose
 
 # Create sql database
 New-AzSqlDatabase  -ResourceGroupName $rgName `
@@ -63,7 +63,7 @@ New-AzSqlDatabase  -ResourceGroupName $rgName `
     -DatabaseName $databaseName `
     -RequestedServiceObjectiveName $sqlEdition `
     -CollationName "JAPANESE_CI_AS" `
-    -MaxSizeBytes $sqlSize
+    -MaxSizeBytes $sqlSize -Verbose
 
 # Create failover group
 New-AzSqlDatabaseFailoverGroup -ResourceGroupName $rgName `

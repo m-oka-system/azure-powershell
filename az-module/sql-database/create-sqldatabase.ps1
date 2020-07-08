@@ -7,7 +7,7 @@ $location = "Japan East"
 # SQLServer
 $sqlServerName = "e-paas-sql"
 $sqlLogin = "sqladmin"
-$sqlPassword = "P@ssword"
+$sqlPassword = "My5up3rStr0ngPaSw0rd!"
 $cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $sqlLogin, $(ConvertTo-SecureString -String $sqlPassword -AsPlainText -Force)
 $firewallRuleName = "AllowSome"
 $startip = "0.0.0.0"

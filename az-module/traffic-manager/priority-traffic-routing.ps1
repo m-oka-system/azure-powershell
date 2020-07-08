@@ -15,10 +15,10 @@ $endPoint2 = "West-EndPoint"
 New-AzResourceGroup -Name $rgName -Location $location1 -Verbose -Force
 
 # Create app service plan
-$appServicePlan1 = New-AzAppServicePlan -ResourceGroupName $rgName -Location $location1 `
+New-AzAppServicePlan -ResourceGroupName $rgName -Location $location1 `
     -Name $appServicePlanName1 -Tier Free -WorkerSize Small -Verbose
 
-$appServicePlan2 = New-AzAppServicePlan -ResourceGroupName $rgName -Location $location2 `
+New-AzAppServicePlan -ResourceGroupName $rgName -Location $location2 `
     -Name $appServicePlanName2 -Tier Free -WorkerSize Small -Verbose
 
 # Create web app
@@ -29,20 +29,20 @@ $web2 = New-AzWebApp -ResourceGroupName $rgName -Location $location2 `
     -AppServicePlan $appServicePlanName2 -Name $webAppName2 -Verbose
 
 # Create traffic manager profile (priority)
-$tm = New-AzTrafficManagerProfile -ResourceGroupName $rgName `
+New-AzTrafficManagerProfile -ResourceGroupName $rgName `
     -Name $profileName `
     -TrafficRoutingMethod Priority `
     -RelativeDnsName $dnsName -Ttl 60 `
     -MonitorProtocol HTTP -MonitorPort 80 -MonitorPath / -Verbose
 
 # Add primary endpoint
-$endpoint = New-AzTrafficManagerEndpoint -ResourceGroupName $rgName `
+New-AzTrafficManagerEndpoint -ResourceGroupName $rgName `
     -Name $endPoint1 -ProfileName $profileName `
     -Type AzureEndpoints -Priority 1 `
     -TargetResourceId $web1.Id -EndpointStatus Enabled -Verbose
 
 # Add secondary endpoint
-$endpoint2 = New-AzTrafficManagerEndpoint -ResourceGroupName $rgName `
+New-AzTrafficManagerEndpoint -ResourceGroupName $rgName `
     -Name $endPoint2 -ProfileName $profileName `
     -Type AzureEndpoints -Priority 2 `
     -TargetResourceId $web2.Id -EndpointStatus Enabled -Verbose
@@ -67,7 +67,6 @@ Set-AzAppServicePlan -ResourceGroupName $rgName `
 
 Set-AzAppServicePlan -ResourceGroupName $rgName `
     -Name $appServicePlanName2 -Tier Free -WorkerSize Small -Verbose
-
 
 # Delete endpoint
 Remove-AzTrafficManagerEndpoint -Name $endPoint1 -ResourceGroupName $rgName -ProfileName $profileName -Type AzureEndpoints -Force

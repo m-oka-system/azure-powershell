@@ -3,7 +3,7 @@ $rgName = "w-iaas-rg"
 $location = "Japan West"
 $vnetName = "w-iaas-vnet"
 $vmName = "w-iaas-vm-01"
-$vmSize = "Standard_B1ls"
+$vmSize = "Standard_F1"
 $diskName = $vmName + "-os-disk"
 $diskType = "Premium_LRS" #Standard_LRS
 $diskSize = 32
@@ -25,7 +25,7 @@ $nic = New-AzNetworkInterface -ResourceGroupName $rgName -Location $location -Na
 $cred = New-Object System.Management.Automation.PSCredential ($adminUser, $adminPassword)
 
 # Create VM configuration
-$vm = New-AzVMConfig -VMName $vmName -VMSize $vmSize
+$vm = New-AzVMConfig -VMName $vmName -VMSize $vmSize -Priority "Spot" -MaxPrice -1
 $vm = Set-AzVMOperatingSystem -VM $vm -Windows -ComputerName $vmName -Credential $cred -ProvisionVMAgent -EnableAutoUpdate
 $vm = Add-AzVMNetworkInterface -VM $vm -Id $nic.Id
 $vm = Set-AzVMSourceImage -VM $vm -Id $imageId

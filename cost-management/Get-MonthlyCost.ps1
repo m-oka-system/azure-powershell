@@ -12,14 +12,32 @@ $aggregation = @{
 }
 
 # Query the usage data for scope defined.
-$response = Invoke-AzCostManagementQuery `
-    -Scope "/subscriptions/$subscriptionId" `
-    -Timeframe MonthToDate `
-    -Type Usage `
-    -DatasetGranularity 'None' `
-    -DatasetAggregation $aggregation
+$retryCount = 0
+$retryMax = 3
+$totalCost = $null
 
-$totalCost = $response.Row[0][0]
+do {
+    $response = Invoke-AzCostManagementQuery `
+        -Scope "/subscriptions/$subscriptionId" `
+        -Timeframe MonthToDate `
+        -Type Usage `
+        -DatasetGranularity 'None' `
+        -DatasetAggregation $aggregation
+
+    $totalCost = $response.Row[0][0]
+    $retryCount++
+
+    if($totalCost -eq $null) {
+        Write-Host "Retry: $retryCount, total cost not retrieved. Trying again in 5 seconds..."
+        Start-Sleep -Seconds 5
+    }
+} while($totalCost -eq $null -and $retryCount -lt $retryMax)
+
+if($totalCost -ne $null) {
+    Write-Host $totalCost
+} else {
+    Write-Host "Failed to retrieve total cost after $retryMax attempts."
+}
 
 # Invoke the REST API to Line notify
 $lineRequestURI = "https://notify-api.line.me/api/notify"

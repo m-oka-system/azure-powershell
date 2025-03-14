@@ -5,15 +5,15 @@ Disable-AzContextAutosave -Scope Process | Out-Null
 $azContext = (Connect-AzAccount -Identity).context
 $subscriptionId = $azContext.Subscription.Id
 $aggregation = @{
-    totalCost= @{
-        name = "PreTaxCost";
+    totalCost = @{
+        name     = "PreTaxCost";
         function = "Sum"
     }
 }
 
 # Query the usage data for scope defined.
 $retryCount = 0
-$retryMax = 3
+$retryMax = 5
 $totalCost = $null
 
 do {
@@ -24,19 +24,22 @@ do {
         -DatasetGranularity 'None' `
         -DatasetAggregation $aggregation
 
-    $totalCost = $response.Row[0][0]
-    $retryCount++
-
-    if($totalCost -eq $null) {
-        Write-Host "Retry: $retryCount, total cost not retrieved. Trying again in 5 seconds..."
-        Start-Sleep -Seconds 5
+    if ($response -eq $null) {
+        Write-Output "Retry: $retryCount, response is null. Trying again in 60 seconds..."
+        Start-Sleep -Seconds 60
+        $retryCount++
+        continue
     }
-} while($totalCost -eq $null -and $retryCount -lt $retryMax)
 
-if($totalCost -ne $null) {
-    Write-Host $totalCost
-} else {
-    Write-Host "Failed to retrieve total cost after $retryMax attempts."
+} while ($response -eq $null -and $retryCount -lt $retryMax)
+
+$totalCost = $response.Row[0][0]
+
+if ($totalCost -ne $null) {
+    Write-Output $totalCost
+}
+else {
+    Write-Output "Failed to retrieve total cost after $retryMax attempts."
 }
 
 # Invoke the REST API to Line notify
@@ -48,7 +51,7 @@ $lineAuthHeader = @{
     'Authorization' = 'Bearer ' + $lineToken
 }
 $lineRequestbody = @{
-    message="`n$totalCost JPY"
+    message = "`n$totalCost JPY"
 }
 
 Invoke-RestMethod -Method POST -Uri $lineRequestURI -Headers $lineAuthHeader -Body $lineRequestbody

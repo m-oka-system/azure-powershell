@@ -42,16 +42,17 @@ else {
     Write-Output "Failed to retrieve total cost after $retryMax attempts."
 }
 
-# Invoke the REST API to Line notify
-$lineRequestURI = "https://notify-api.line.me/api/notify"
+# Invoke the REST API to Line Messaging API
+$lineRequestURI = "https://api.line.me/v2/bot/message/broadcast"
 $vaultName = Get-AutomationVariable -Name VAULT_NAME
-$lineToken = Get-AzKeyVaultSecret -VaultName $vaultName -name LINE-NOTIFY-ACCESS-TOKEN -AsPlainText
+$lineToken = Get-AzKeyVaultSecret -VaultName $vaultName -name CHANNEL-ACCESS-TOKEN -AsPlainText
 $lineAuthHeader = @{
-    'Content-Type'  = 'application/x-www-form-urlencoded'
+    'Content-Type'  = 'application/json'
     'Authorization' = 'Bearer ' + $lineToken
 }
 $lineRequestbody = @{
-    message = "`n$totalCost JPY"
+    type = "text"
+    text = "PAYG:`n$totalCost JPY"
 }
 
-Invoke-RestMethod -Method POST -Uri $lineRequestURI -Headers $lineAuthHeader -Body $lineRequestbody
+Invoke-RestMethod -Method POST -Uri $lineRequestURI -Headers $lineAuthHeader -Body (@{ messages = @($lineRequestbody)} | ConvertTo-Json -Depth 10)
